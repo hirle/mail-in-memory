@@ -14,7 +14,8 @@
     "copy-ui-to-dist": "mkdir -p dist/static && cp -R ui/build/ dist/static",
     "pack-model": "cd model && yarn pack --filename ../dist/mail-in-memory-model.tgz",
     "build": "lerna exec yarn build",
-    "start": "cd api && yarn start"
+    "start": "cd api && yarn start",
+    "test": "lerna exec yarn test"
   },
   "author": "Hirle",
   "license": "UNLICENSED",

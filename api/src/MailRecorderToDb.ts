@@ -1,3 +1,4 @@
+import { Mail } from "@mail-in-memory/model";
 import DbConnector from "./DbConnector";
 import MailProcessor from "./MailProcessor";
 
@@ -11,8 +12,8 @@ export default class MailRecorderToDb extends MailProcessor {
         this.dbConnector = dbConnector;
     }
 
-    onNewMail( from: string, to: string, subject: string, body: string, timestamp: Date): Promise<void> {
-        return this.dbConnector.recordMail(from, to, subject, body, timestamp);
+    onNewMail( newMail: Mail): Promise<void> {
+        return this.dbConnector.recordMail(newMail);
     } 
 
 }

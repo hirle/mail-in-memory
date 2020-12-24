@@ -10,8 +10,8 @@ export interface DatabaseConfig {
 
 
 export default interface Config {
-    smtpPortNumber: number,
-    httpPortNumber: number,
+    "smtp-port": number,
+    "http-port": number,
     db: DatabaseConfig,
     logs?: LogsConfig
   }

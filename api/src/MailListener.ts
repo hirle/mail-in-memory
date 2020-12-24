@@ -1,5 +1,6 @@
 const nodeMailin = require('node-mailin');
 import MailProcessor from './MailProcessor';
+import { Mail } from '@mail-in-memory/model';
 import Logger from './Logger';
 
 export default class MailListener {
@@ -29,7 +30,8 @@ export default class MailListener {
             logger.info('Processing from %s to %s, %s', from, to, subject)
 
             this.mailProcessors.forEach( processor => {
-                processor.onNewMail(from, to, subject, data.text, new Date(data.date))
+                const newMail = new Mail( from, to, subject, data.text, new Date(data.date));
+                processor.onNewMail(newMail)
                     .catch( error => logger.error(error));
             })     
           });

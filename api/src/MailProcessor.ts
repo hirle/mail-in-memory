@@ -1,3 +1,5 @@
+import { Mail } from "@mail-in-memory/model";
+
 export default abstract class MailProcessor {
-    abstract onNewMail( from: string, to: string, subject: string, content: string, timestamp: Date): Promise<void>;
+    abstract onNewMail( newMail: Mail ): Promise<void>;
 }

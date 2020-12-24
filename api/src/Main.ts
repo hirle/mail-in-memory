@@ -1,10 +1,10 @@
 import DbConnector from "./DbConnector";
-import Logger from "./Logger";
 import MailListener from "./MailListener";
 import MailRecorderToDb from "./MailRecorderToDb";
 import DefaultConfig from './default.config.json';
 import Config from './Config';
 import fs from 'fs';
+import Logger from "./Logger";
 
 export function main(argv: string[]): number {
     
@@ -17,7 +17,7 @@ export function main(argv: string[]): number {
     const dbConnector = new DbConnector(config.db);
     const mailRecorder: MailRecorderToDb = new MailRecorderToDb(dbConnector);
     mailListener.subscribe(mailRecorder);
-    mailListener.start(config.smtpPortNumber, Logger.getAppLogger());
+    mailListener.start(config["smtp-port"], Logger.getAppLogger());
 
     return 0;
 }

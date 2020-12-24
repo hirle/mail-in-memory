@@ -3,4 +3,4 @@ export enum SocketMessages {
     Disconnect = 'disconnect',
     Status = 'status',
     LastMails = 'last-mails'
-};
+}

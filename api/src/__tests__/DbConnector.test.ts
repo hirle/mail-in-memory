@@ -1,8 +1,8 @@
 import DbConnector from '../DbConnector';
-import { Mail } from '@mail-in-memory/model'
+import {Mail} from '@mail-in-memory/model';
 
 describe('DbConnector', () => {
-    it('should test', () => {
+    it('should connect the db, create 1 record', () => {
         const config = {
             filename: ':memory:'
         };

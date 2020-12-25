@@ -1,4 +1,7 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hirle_mail-in-memory&metric=alert_status)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+
 
 # Mail In Memory
 

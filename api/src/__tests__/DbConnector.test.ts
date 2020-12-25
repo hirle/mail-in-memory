@@ -10,8 +10,18 @@ describe('DbConnector', () => {
         const conn = new DbConnector(config);
         return conn.connect()
             .then( () => {
-                const testMail = new Mail('hirle.spam+teracom1@free.fr', 'mailin.logger@localhost', 'subject', 'this is a long text', new Date());
+                const testMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'subject', 'this is a long text', new Date());
                 return conn.recordMail(testMail);
+            })
+            .then( () => {
+                return conn.getLatestMails(1)
+                    .then( mails => {
+                        expect(mails).toHaveLength(1);
+                        const mail = mails[0];
+                        expect(mail.fromAddress).toBe('expeditor@domain.org');
+                        expect(mail.toAddress).toBe('destinator@localhost');
+                        return Promise.resolve();
+                    });
             })
             .then( () => conn.disconnect() );
     });

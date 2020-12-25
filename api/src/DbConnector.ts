@@ -44,11 +44,11 @@ export default class DbConnector {
     recordMail(mail: Mail): Promise<void> {
         return this.db(DbConnector.tableName)
             .insert(mail)
-            .then( output => {})
+            .then( () => Promise.resolve())
     }
 
     getLatestMails(count: number): Promise<Mail[]> {
-        return this.db.select().from<MailInterface>(DbConnector.tableName).limit(count).orderBy('mailTimestamp')
+        return this.db.select().from<MailInterface>(DbConnector.tableName).limit(count).orderBy('mailTimestamp', 'desc')
             .then( altmostMails => altmostMails.map( (altmostMail: MailInterface) => Mail.create(altmostMail)));
     }
 }

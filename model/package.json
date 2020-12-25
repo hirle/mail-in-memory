@@ -14,7 +14,8 @@
   },
   "scripts": {
     "build": "rollup --config",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.1.0",

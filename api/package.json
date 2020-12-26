@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage  --watchAll=false"
   },
   "author": "Hirle",
   "license": "MIT",

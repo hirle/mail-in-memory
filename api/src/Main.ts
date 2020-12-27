@@ -5,6 +5,7 @@ import DefaultConfig from './default.config.json';
 import Config from './Config';
 import fs from 'fs';
 import Logger from "./Logger";
+import SplashScreen from "./SplashScreen";
 
 export function main(argv: string[]): number {
     
@@ -19,14 +20,17 @@ export function main(argv: string[]): number {
     mailListener.subscribe(mailRecorder);
     mailListener.start(config["smtp-port"], Logger.getAppLogger());
 
+    console.log(SplashScreen.computeSplashScreen(config));
+    
     return 0;
 }
 
 function processArgv(argv: string[]): Config {
     switch( argv.length ) 
-    { case 1: return DefaultConfig; 
-      case 2: throw new Error('Missing argument: ./path/to/config.json');
-      case 3: if( argv[2] === '--config' ) {
+    {
+      case 2: return DefaultConfig; 
+      case 3: throw new Error('Missing argument: ./path/to/config.json');
+      case 4: if( argv[3] === '--config' ) {
           return JSON.parse(fs.readFileSync(argv[2], 'utf8'))
         }  else {
           throw new Error('Bad argument');

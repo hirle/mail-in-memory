@@ -1,6 +1,6 @@
 export interface LogsConfig {
     dir: string
-    retention: string
+    retention: number
     level?: string
   }
 

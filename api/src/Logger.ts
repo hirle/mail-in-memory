@@ -2,7 +2,7 @@ import { createLogger, format, transports, Logger as WinstonLogger } from 'winst
 import { default as DailyRotateFile } from 'winston-daily-rotate-file';
 import {LogsConfig} from './Config';
 import { Options as MorganOptions } from 'morgan';
-import { Format } from 'logform';
+import { format as LogFormFormat } from 'logform';
 import fs from 'fs';
 import path from 'path';
 
@@ -16,54 +16,70 @@ export default class Logger {
     this.winstonLogger = winstonLogger;
   }
 
-  info(format:string , ...args: any[]) {
-    this.winstonLogger.info(format, ...args);
+  info(template:string , ...args: any[]) {
+    this.winstonLogger.info(template, ...args);
   }
-  warn(format:string , ...args: any[]) {
-    this.winstonLogger.warn(format, ...args);
+  warn(template:string , ...args: any[]) {
+    this.winstonLogger.warn(template, ...args);
   }
-  error(format:string , ...args: any[]) {
-    this.winstonLogger.error(format, ...args);
+  error(template:string , ...args: any[]) {
+    this.winstonLogger.error(template, ...args);
   }
 
   public static initialize(logsConfig: LogsConfig|undefined) {
 
-    const noLogsDir = {
-      dir: '/dev/null',
-      retention: 0,
-      level: 'info'
-    }   
-    const effectiveLogsConfig = logsConfig || noLogsDir;
-
-    const logDir = effectiveLogsConfig.dir;
-
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir);
+    if( logsConfig && logsConfig.dir ) {
+      return this.initializeWFileLogging(logsConfig)
+    } else { 
+      return this.initializeConsoleOnlyLogging();
     }
-
-    const baseFormat: Format = format.combine(
-      format.splat(),
-      format.timestamp({
-        format: 'YYYY-MM-DD HH:mm:ss'
-      }),
-      format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-    );
-
+  }
+  static initializeConsoleOnlyLogging() {
     Logger.appLogger = new Logger(createLogger({
-      level: effectiveLogsConfig.level || 'info',
-      format: baseFormat,
+      level: 'info',
+      format: this.getBaseFormat(),
+      transports: [Logger.makeConsoleTransport()]
+    }));
+  }
+  static initializeWFileLogging(logsConfig: LogsConfig) {
+    Logger.appLogger = new Logger(createLogger({
+      level: logsConfig.level || 'info',
+      format: this.getBaseFormat(),
       transports: [
-        new transports.Console({
-          level: 'warn',
-          format: format.combine(baseFormat, format.colorize())
-        }),
-        new DailyRotateFile({
-          filename: path.join(logDir, 'app-%DATE%.log'),
-          maxFiles: effectiveLogsConfig.retention
-        })
+        Logger.makeConsoleTransport(),
+        Logger.makeFileTransport(logsConfig.dir, logsConfig.retention )
       ]
     }));
   }
+
+  static getBaseFormat() {
+    return LogFormFormat.combine(
+      LogFormFormat.splat(),
+      LogFormFormat.timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss'
+      }),
+      LogFormFormat.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+    );
+  }
+   
+  static makeConsoleTransport () {
+    return new transports.Console({
+      level: 'warn',
+      format: LogFormFormat.combine(this.getBaseFormat(), LogFormFormat.colorize())
+    })
+  }
+
+  static makeFileTransport (dir: string, retention: number|undefined) {
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+      }
+
+      return new DailyRotateFile({
+        filename: path.join(dir, 'app-%DATE%.log'),
+        maxFiles: retention 
+      });
+    }
 
   public static getAppLogger(): Logger {
     if (Logger.appLogger === undefined) {

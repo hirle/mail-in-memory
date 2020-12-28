@@ -1,4 +1,7 @@
 import { mocked } from 'ts-jest/utils';
+import mockConsole from 'jest-mock-console';
+import { withFile } from 'tmp-promise';
+import { promises as fs } from 'fs';
 import {main} from '../Main';
 import DbConnector from "../DbConnector";
 import MailListener from "../MailListener";
@@ -8,7 +11,6 @@ import SplashScreen from '../SplashScreen';
 
 import DefaultConfig from '../default.config.json';
 
-import mockConsole from "jest-mock-console";
 
 jest.mock('../Logger');
 jest.mock('../DbConnector');
@@ -16,6 +18,11 @@ jest.mock('../MailListener');
 jest.mock('../MailRecorderToDb');
 
 describe('Main', ()=> {
+
+    beforeEach( () => {
+        jest.clearAllMocks();
+    });
+
     it('should throw on illegal arguments', ()=> {
         expect(() => {
             main([]);
@@ -30,6 +37,10 @@ describe('Main', ()=> {
         }).toThrow(Error);
 
         expect(() => {
+            main(['node', 'index.js', '--not-config']);
+        }).toThrow(Error);
+
+        expect(() => {
             main(['node', 'index.js', '--config', 'config.json', 'foo']);
         }).toThrow(Error);
 
@@ -38,7 +49,7 @@ describe('Main', ()=> {
         expect(MailRecorderToDb).not.toHaveBeenCalled();
     });
 
-    it('should run with the default argument', ()=> {
+    it('should run with the default argument and the bind the components together', ()=> {
 
         const restoreConsole = mockConsole();
 
@@ -69,5 +80,29 @@ describe('Main', ()=> {
         expect(console.log).toHaveBeenCalled();
 
         restoreConsole();
+    });
+
+    it('should run with given config file', ()=> {
+     
+        const testConfigFile =  {
+            db: {
+                filename: 'valueFromConfigFile'
+            }, 
+            "smtp-port": 1225,
+            "http-port": 1280
+        };
+
+        return withFile( ( {path} ) => {
+            return fs.writeFile( path, JSON.stringify(testConfigFile)  )
+                .then( () => path )
+                .then( path => {
+                    main(['node', 'index.js', '--config', path]);
+                });
+          }).then(v => {
+
+            expect(DbConnector).toHaveBeenCalled();
+            const mockedDbConnector  = mocked(DbConnector);
+            expect(mockedDbConnector.mock.calls[0][0].filename).toBe('valueFromConfigFile');
+          });
     });
 });

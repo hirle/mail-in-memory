@@ -31,7 +31,7 @@ function processArgv(argv: string[]): Config {
       case 2: return DefaultConfig; 
       case 3: throw new Error('Missing argument: ./path/to/config.json');
       case 4: if( argv[2] === '--config' ) {
-          return JSON.parse(fs.readFileSync(argv[2], 'utf8'))
+          return JSON.parse(fs.readFileSync(argv[3], 'utf8'))
         }  else {
           throw new Error('Bad argument');
         } 

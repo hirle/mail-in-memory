@@ -37,7 +37,7 @@ describe('Main', ()=> {
         }).toThrow(Error);
 
         expect(() => {
-            main(['node', 'index.js', '--not-config']);
+            main(['node', 'index.js', '--not-config', 'something']);
         }).toThrow(Error);
 
         expect(() => {

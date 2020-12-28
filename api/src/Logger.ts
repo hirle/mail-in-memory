@@ -8,8 +8,6 @@ import path from 'path';
 
 export default class Logger {
 
-  private static appLogger: Logger;
-
   private winstonLogger: WinstonLogger;
 
   constructor(winstonLogger: WinstonLogger) {
@@ -26,23 +24,22 @@ export default class Logger {
     this.winstonLogger.error(template, ...args);
   }
 
-  public static initialize(logsConfig: LogsConfig|undefined) {
-
-    if( logsConfig && logsConfig.dir ) {
-      return this.initializeWFileLogging(logsConfig)
-    } else { 
-      return this.initializeConsoleOnlyLogging();
-    }
+  public static create(logsConfig: LogsConfig|undefined): Logger  {
+    return logsConfig && logsConfig.dir 
+      ? Logger.initializeWFileLogging(logsConfig)
+      : Logger.initializeConsoleOnlyLogging();
   }
-  static initializeConsoleOnlyLogging() {
-    Logger.appLogger = new Logger(createLogger({
+
+  static initializeConsoleOnlyLogging(): Logger {
+    return new Logger(createLogger({
       level: 'info',
       format: this.getBaseFormat(),
       transports: [Logger.makeConsoleTransport()]
     }));
   }
-  static initializeWFileLogging(logsConfig: LogsConfig) {
-    Logger.appLogger = new Logger(createLogger({
+
+  static initializeWFileLogging(logsConfig: LogsConfig): Logger {
+    return new Logger(createLogger({
       level: logsConfig.level || 'info',
       format: this.getBaseFormat(),
       transports: [
@@ -80,12 +77,4 @@ export default class Logger {
         maxFiles: retention 
       });
     }
-
-  public static getAppLogger(): Logger {
-    if (Logger.appLogger === undefined) {
-      throw new Error('Logger requires initialization')
-    } else {
-      return Logger.appLogger;
-    }
-  }
 }

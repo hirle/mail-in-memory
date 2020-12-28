@@ -94,12 +94,10 @@ describe('Main', ()=> {
 
         return withFile( ( {path} ) => {
             return fs.writeFile( path, JSON.stringify(testConfigFile)  )
-                .then( () => path )
-                .then( path => {
+                .then( () => {
                     main(['node', 'index.js', '--config', path]);
                 });
           }).then(v => {
-
             expect(DbConnector).toHaveBeenCalled();
             const mockedDbConnector  = mocked(DbConnector);
             expect(mockedDbConnector.mock.calls[0][0].filename).toBe('valueFromConfigFile');

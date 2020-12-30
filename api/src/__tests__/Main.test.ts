@@ -92,15 +92,19 @@ describe('Main', ()=> {
             "http-port": 1280
         };
 
+        const restoreConsole = mockConsole();
+
         return withFile( ( {path} ) => {
             return fs.writeFile( path, JSON.stringify(testConfigFile)  )
                 .then( () => {
                     main(['node', 'index.js', '--config', path]);
                 });
-          }).then(v => {
+          }).then(() => {
             expect(DbConnector).toHaveBeenCalled();
             const mockedDbConnector  = mocked(DbConnector);
             expect(mockedDbConnector.mock.calls[0][0].filename).toBe('valueFromConfigFile');
+          }).then( () => {
+              restoreConsole();
           });
     });
 });

@@ -26,11 +26,8 @@ describe('DbConnector', () => {
 
 function testDbOnConfig(config: { filename: string; }) {
     const conn = new DbConnector(config);
-    return conn.connect()
-        .then(() => {
-            const testMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'subject', 'this is a long text', new Date());
-            return conn.recordMail(testMail);
-        })
+    const testMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'subject', 'this is a long text', new Date());
+    return conn.recordMail(testMail)
         .then(() => {
             return conn.getLatestMails(1)
                 .then(mails => {

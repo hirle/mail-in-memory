@@ -5,31 +5,30 @@ import {Mail, MailInterface} from '@mail-in-memory/model';
 
 export default class DbConnector {
 
-    private db: Knex;
+    private readyDb: Promise<Knex>;
     private static readonly tableName = 'mails';
 
     constructor(dbConfig: DatabaseConfig) {
-        this.db = Knex( {
+        const db = Knex( {
                 client: 'sqlite3',
                 connection: { filename: dbConfig.filename },
                 // 🤔
                 useNullAsDefault: true
             });
-    }
 
-    connect(): Promise<void> {
-        return this.db.schema.hasTable(DbConnector.tableName)
+        this.readyDb = db.schema.hasTable(DbConnector.tableName)
             .then( tableExists => tableExists
                     ? Promise.resolve()
-                    : this.prepareTable(DbConnector.tableName) );
+                    : DbConnector.prepareTable(db, DbConnector.tableName))
+            .then( () => Promise.resolve(db));
     }
 
     disconnect(): Promise<void> {
-        return this.db.destroy();
+        return this.readyDb.then( db => db.destroy());
     }
 
-    private prepareTable( tableName :string ): Promise<void> {
-        return this.db.schema.createTable(tableName, table => {
+    private static prepareTable( db: Knex, tableName :string ): Promise<void> {
+        return db.schema.createTable(tableName, table => {
             table.increments('id');
             table.string('fromAddress', 254).notNullable();
             table.string('toAddress', 254).notNullable();
@@ -38,17 +37,18 @@ export default class DbConnector {
             table.timestamp('mailTimestamp', { useTz: true }).notNullable();
 
             table.index(['mailTimestamp'], 'iMailTimestamp');
-        })
+        });
     }
 
     recordMail(mail: Mail): Promise<void> {
-        return this.db(DbConnector.tableName)
-            .insert(mail)
+        return this.readyDb
+            .then( db => db(DbConnector.tableName) .insert(mail))
             .then( () => Promise.resolve())
     }
 
     getLatestMails(count: number): Promise<Mail[]> {
-        return this.db.select().from<MailInterface>(DbConnector.tableName).limit(count).orderBy('mailTimestamp', 'desc')
+        return this.readyDb
+            .then( db => db.select().from<MailInterface>(DbConnector.tableName).limit(count).orderBy('mailTimestamp', 'desc'))
             .then( altmostMails => altmostMails.map( (altmostMail: MailInterface) => Mail.create(altmostMail)));
     }
 }

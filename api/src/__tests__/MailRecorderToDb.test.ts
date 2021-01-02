@@ -5,10 +5,8 @@ import {Mail} from '@mail-in-memory/model';
 jest.mock('../DbConnector');
 
 
-describe('DbConnector', () => {
+describe('MailRecorderToDb', () => {
     it('should call record mail using the db connector', () => {
-
-
         const dbConnector: DbConnector = new DbConnector({filename: 'this is a mock'});
 
         const mail = Mail.create({
@@ -18,7 +16,7 @@ describe('DbConnector', () => {
              mailTimestamp : new Date()
             });
 
-        const underTest : MailRecorderToDb = new  MailRecorderToDb( dbConnector );
+        const underTest : MailRecorderToDb = new MailRecorderToDb( dbConnector );
         underTest.onNewMail(mail);
         expect( dbConnector.recordMail).toHaveBeenCalledWith(mail);
         expect( dbConnector.recordMail).toHaveBeenCalledTimes(1);

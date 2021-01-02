@@ -1,0 +1,13 @@
+.error {
+    font-size: 36px;
+    color: red;
+}
+
+thead {
+    background-color: #333;
+    color: #fff;
+}
+
+td {
+    border: 1px solid #333;
+}

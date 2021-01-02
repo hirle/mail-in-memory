@@ -1,17 +1,17 @@
 const nodeMailin = require('node-mailin');
-import MailProcessor from './MailProcessor';
+import MailConsumer from './MailConsumer';
 import { Mail } from '@mail-in-memory/model';
 import Logger from './Logger';
 
 export default class MailListener {
 
-    private mailProcessors : MailProcessor[];
+    private mailProcessors : MailConsumer[];
 
     constructor() {
         this.mailProcessors = [];
     }
 
-    subscribe( mailProcessor: MailProcessor) {
+    subscribe( mailProcessor: MailConsumer) {
         this.mailProcessors.push(mailProcessor);
     }
 

@@ -2,13 +2,13 @@ import Mail from '../Mail';
 
 describe('Mail', () => {
   it('create an object from Interface', () => {
-    const now = new Date();
+    const now = new Date('2020-12-25T23:00:00Z');
     const mayBeMail = {
       fromAddress: "from",
       toAddress: "to",
       subject: "about",
       body: "building",
-      mailTimestamp: new Date()
+      mailTimestamp: now
     }
 
     const underTest = Mail.create( mayBeMail );

@@ -15,7 +15,7 @@ export default class Mail {
     }
 
     static create( data: MailInterface): Mail {
-        return new Mail(data.fromAddress, data.toAddress, data.subject, data.body, data.mailTimestamp);
+        return new Mail(data.fromAddress, data.toAddress, data.subject, data.body, new Date(data.mailTimestamp));
     }
 }
 

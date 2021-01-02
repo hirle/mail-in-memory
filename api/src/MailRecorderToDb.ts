@@ -1,8 +1,8 @@
 import { Mail } from "@mail-in-memory/model";
 import DbConnector from "./DbConnector";
-import MailProcessor from "./MailProcessor";
+import MailConsumer from "./MailConsumer";
 
-export default class MailRecorderToDb extends MailProcessor {
+export default class MailRecorderToDb extends MailConsumer {
 
     private dbConnector: DbConnector;
 
@@ -15,5 +15,4 @@ export default class MailRecorderToDb extends MailProcessor {
     onNewMail( newMail: Mail): Promise<void> {
         return this.dbConnector.recordMail(newMail);
     } 
-
 }

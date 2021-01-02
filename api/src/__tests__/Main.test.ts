@@ -6,7 +6,9 @@ import {main} from '../Main';
 import DbConnector from "../DbConnector";
 import MailListener from "../MailListener";
 import MailRecorderToDb from '../MailRecorderToDb';
+import GetLatestMailsRequestHandler from '../GetLatestMailsRequestHandler';
 import Logger from '../Logger';
+import Web from '../Web';
 import SplashScreen from '../SplashScreen';
 
 import DefaultConfig from '../default.config.json';
@@ -16,6 +18,8 @@ jest.mock('../Logger');
 jest.mock('../DbConnector');
 jest.mock('../MailListener');
 jest.mock('../MailRecorderToDb');
+jest.mock('../GetLatestMailsRequestHandler');
+jest.mock('../Web');
 
 describe('Main', ()=> {
 
@@ -56,6 +60,10 @@ describe('Main', ()=> {
         const mockLoggerCreate = jest.fn().mockImplementationOnce(() => 'mockLogger');
         Logger.create = mockLoggerCreate;
 
+        const mockRequestHandler = jest.fn();
+        const mockGetLatestMailsRequestHandlerCreate = jest.fn().mockImplementationOnce( () => mockRequestHandler );
+        GetLatestMailsRequestHandler.create = mockGetLatestMailsRequestHandlerCreate;
+
         const mockSplashScreen = jest.fn();
         SplashScreen.computeSplashScreen = mockSplashScreen;
 
@@ -71,10 +79,17 @@ describe('Main', ()=> {
         const mockMailRecorderToDb  = mocked(MailRecorderToDb);
         expect(mockMailRecorderToDb.mock.calls[0][0]).toBe(mockedDbConnector.mock.instances[0]);
 
+        expect(mockGetLatestMailsRequestHandlerCreate).toHaveBeenCalledWith(mockedDbConnector.mock.instances[0]);
+
         expect(MailListener).toHaveBeenCalled();
         const mockMailListener  = mocked(MailListener,true);
-        expect(mockMailListener.mock.instances[0].subscribe).toHaveBeenLastCalledWith(mockMailRecorderToDb.mock.instances[0]);
+        expect(mockMailListener.mock.instances[0].subscribe).toHaveBeenCalledWith(mockMailRecorderToDb.mock.instances[0]);
         expect(mockMailListener.mock.instances[0].start).toHaveBeenLastCalledWith(DefaultConfig['smtp-port'], 'mockLogger');
+
+        expect(Web).toHaveBeenCalled();
+        const mockWeb  = mocked(Web,false);
+        expect(mockWeb.mock.instances[0].startOn).toHaveBeenCalled();
+        expect(mockWeb.mock.instances[0].recordGetRoute).toHaveBeenCalledWith( '/api/mails/latest', mockRequestHandler);
 
         expect(mockSplashScreen).toHaveBeenCalled();
         expect(console.log).toHaveBeenCalled();

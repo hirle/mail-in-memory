@@ -1,11 +1,14 @@
 import DbConnector from "./DbConnector";
 import MailListener from "./MailListener";
+import MailMessageEmitter from "./MailMessageEmitter";
 import MailRecorderToDb from "./MailRecorderToDb";
 import DefaultConfig from './default.config.json';
 import Config from './Config';
 import fs from 'fs';
 import Logger from "./Logger";
 import SplashScreen from "./SplashScreen";
+import Web from "./Web";
+import GetLatestMailsRequestHandler from "./GetLatestMailsRequestHandler";
 
 export function main(argv: string[]): number {
     
@@ -16,8 +19,21 @@ export function main(argv: string[]): number {
     const mailListener = new MailListener();
 
     const dbConnector = new DbConnector(config.db);
+    
+    const web = new Web(config);
+    
     const mailRecorder: MailRecorderToDb = new MailRecorderToDb(dbConnector);
     mailListener.subscribe(mailRecorder);
+
+    const mailMessageEmitter: MailMessageEmitter = new MailMessageEmitter(web);
+    mailListener.subscribe(mailMessageEmitter);
+
+    web.startOn();
+
+    const requestHandler = GetLatestMailsRequestHandler.create(dbConnector);
+    console.log(requestHandler);
+    web.recordGetRoute('/api/mails/latest', requestHandler);
+
     mailListener.start(config["smtp-port"], logger);
 
     console.log(SplashScreen.computeSplashScreen(config));

@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 jest.mock('socket.io-client');
 
 describe('SocketIo', () => {
-    it('should start, register observer and run their callbacks', ( ) => {
+    it('should register observer and run their callbacks', ( ) => {
 
         const underTest = new SocketIo();
         underTest.startOn('/socketio');
@@ -27,10 +27,22 @@ describe('SocketIo', () => {
         expect(barCallBack).not.toHaveBeenCalled();
 
 
-        underTest.notify('bar', {foo:true});
+        underTest.notify('bar', {bar:true});
         expect(fooCallBack1).toHaveBeenCalledTimes(1);
         expect(fooCallBack2).toHaveBeenCalledTimes(1);
         expect(barCallBack).toHaveBeenCalledTimes(1);
-        
+
+        underTest.notify('nothing registered', {nothing:true});
+        expect(fooCallBack1).toHaveBeenCalledTimes(1);
+        expect(fooCallBack2).toHaveBeenCalledTimes(1);
+        expect(barCallBack).toHaveBeenCalledTimes(1);
+
     });
+
+    it('should return whethter it is connected', ( ) => {
+        const underTest = new SocketIo();
+        expect(underTest.isConnected()).toBeFalsy();
+
+        // TO DO test the connected case
+    });    
 });

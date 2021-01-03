@@ -29,7 +29,6 @@ export default class BeepOnNewMail extends React.Component<ComponentProps, Compo
 
     onNewMail() {
         this.setState({lastEmailDate: new Date()});
-        console.log(this.state.beep);
         if( this.state.beep && this.audioRef.current) {
             this.audioRef.current.play()
                 .catch(err => {

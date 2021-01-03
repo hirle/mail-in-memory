@@ -8,10 +8,10 @@
 
 .App-header {
   font-size: 36px;
-  color: black;
+  color: #111;
   padding: 12px 12px;
   margin: 2px;
-  border: solid thin gray;
+  border: solid thin #111;
   text-align: left;
 }
 

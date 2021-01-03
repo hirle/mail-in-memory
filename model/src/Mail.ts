@@ -24,5 +24,5 @@ export interface MailInterface {
     toAddress: string;
     subject?: string;
     body: string;
-    mailTimestamp: Date;
+    mailTimestamp: Date|string|number;
 }

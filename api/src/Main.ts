@@ -31,7 +31,6 @@ export function main(argv: string[]): number {
     web.startOn();
 
     const requestHandler = GetLatestMailsRequestHandler.create(dbConnector);
-    console.log(requestHandler);
     web.recordGetRoute('/api/mails/latest', requestHandler);
 
     mailListener.start(config["smtp-port"], logger);

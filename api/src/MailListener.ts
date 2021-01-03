@@ -19,7 +19,8 @@ export default class MailListener {
 
         nodeMailin.start({
             port,
-            disableSpamScore: true
+            disableSpamScore: true,
+            logLevel: "warn",
         });
 
         nodeMailin.on("message", ( _: any, data: any) => {

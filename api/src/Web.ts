@@ -34,7 +34,7 @@ export default class Web {
         })
 
         this.server.listen(this.config['http-port'], () => {
-            console.log(`Listening on ${this.server.address()}`)
+            console.log(`Listening on ${this.config['http-port']}`)
         });
     }
 

@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "prepare-dist": "run-p copy-api-to-dist copy-ui-to-dist pack-model",
-    "copy-api-to-dist": "mkdir -p dist && cp api/dist/*.js dist && cp api/package.json dist",
+    "copy-api-to-dist": "mkdir -p dist && cp api/dist/*.js dist && cp api/dist/*.json dist && cp api/package.json dist",
     "copy-ui-to-dist": "mkdir -p dist/static && cp -R ui/build/ dist/static",
     "pack-model": "cd model && yarn pack --filename ../dist/mail-in-memory-model.tgz",
     "build": "lerna exec yarn build",

@@ -19,7 +19,8 @@
     "react-scripts": "4.0.1",
     "socket.io-client": "2.3.0",
     "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "@mail-in-memory/model": "1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,5 +47,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3300"
+  "proxy": "http://localhost:3300",
+  "homepage": "."
 }

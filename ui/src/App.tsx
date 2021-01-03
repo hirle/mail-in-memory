@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
+import LogoName from './LogoName';
 import ListEmails from './ListEmails';
 import SocketIo from './SocketIo';
+import BeepOnNewMail from './BeepOnNewMail';
 
 export default class App extends React.Component {
   private socketIo: SocketIo;
@@ -22,8 +24,8 @@ export default class App extends React.Component {
   render() { return (
       <div className="App">
         <header className="App-header">
-          <img className="elephant" alt="Elephant holding an email" src="logo192.png"/>
-          Mail-In-Memory
+          <LogoName/>
+          <BeepOnNewMail socketIo={this.socketIo}/>
         </header>
         <ListEmails socketIo={this.socketIo}/>
       </div>

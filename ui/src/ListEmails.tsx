@@ -21,7 +21,7 @@ enum ComponentStatus {
       mails: Mail[]
   }
 
-  export default class CurrentTemperature
+  export default class ListEmails
     extends React.Component<ComponentProps, ComponentState> {
 
     constructor(props: ComponentProps) {
@@ -69,11 +69,11 @@ enum ComponentStatus {
     }
     
     onConnect() {
-    this.setState({connected: true});
+      this.setState({connected: true});
     }
 
     onDisconnect() {
-    this.setState({connected: false});
+      this.setState({connected: false});
     }
 
     render() {
@@ -91,7 +91,7 @@ enum ComponentStatus {
                     </tr>
                 </thead>
                 <tbody>
-                  { this.state.mails.map( (mail, index) => (<tr key={index}>
+                  { this.state.mails.map( mail => (<tr key={mail.mailTimestamp.getTime()}>
                       <td >{mail.fromAddress}</td>
                       <td >{mail.toAddress}</td>
                       <td >{mail.subject||''}</td>

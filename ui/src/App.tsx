@@ -22,6 +22,7 @@ export default class App extends React.Component {
   render() { return (
       <div className="App">
         <header className="App-header">
+          <img className="elephant" alt="Elephant holding an email" src="logo192.png"/>
           Mail-In-Memory
         </header>
         <ListEmails socketIo={this.socketIo}/>

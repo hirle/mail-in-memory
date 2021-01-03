@@ -14,3 +14,8 @@
   border: solid thin gray;
   text-align: left;
 }
+
+.elephant {
+  height: 48px;
+  margin-right:8px;
+}

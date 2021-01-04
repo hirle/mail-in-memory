@@ -11,9 +11,6 @@ export default class App extends React.Component {
   constructor(props: any ) {
     super(props);
     this.socketIo = new SocketIo();
-  }
-
-  componentDidMount() {
     this.socketIo.startOn('/');
   }
 

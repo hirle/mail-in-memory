@@ -4,4 +4,9 @@
     margin: 2px;
     border: solid thin #111;
     text-align: left;
+    line-height: 1.8;
+}
+
+.beep-on-new-mail input {
+    margin-right: 6px;
 }

@@ -4,8 +4,6 @@ import { NextFunction } from 'express';
 import DbConnector from '../DbConnector';
 import GetLatestMailsRequestHandler from '../GetLatestMailsRequestHandler';
 import { Mail } from '@mail-in-memory/model';
-import { doesNotMatch } from 'assert';
-import { DNSPacket } from '@homebridge/ciao/lib/coder/DNSPacket';
 
 jest.mock('../DbConnector');
 

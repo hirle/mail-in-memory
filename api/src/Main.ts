@@ -9,6 +9,8 @@ import Logger from "./Logger";
 import SplashScreen from "./SplashScreen";
 import Web from "./Web";
 import GetLatestMailsRequestHandler from "./GetLatestMailsRequestHandler";
+import GetMailsSinceRequestHandler from "./GetMailsSinceRequestHandler";
+import GetMailsForRequestHandler from "./GetMailsForRequestHandler";
 
 export function main(argv: string[]): number {
     
@@ -30,14 +32,25 @@ export function main(argv: string[]): number {
 
     web.startOn();
 
-    const requestHandler = GetLatestMailsRequestHandler.create(dbConnector);
-    web.recordGetRoute('/api/mails/latest', requestHandler);
+    setupApiRoutes(web, dbConnector );
 
     mailListener.start(config["smtp-port"], logger);
 
     console.log(SplashScreen.computeSplashScreen(config));
     
     return 0;
+}
+
+function setupApiRoutes( web: Web, dbConnector: DbConnector ) {
+  const latestMailsRequestHandle = GetLatestMailsRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/latest', latestMailsRequestHandle);
+
+  const sinceMailsRequestHandle = GetMailsSinceRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/since/:isodate', sinceMailsRequestHandle);
+
+  const forMailsRequestHandle = GetMailsForRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/for/:isoduration', forMailsRequestHandle);
+
 }
 
 function processArgv(argv: string[]): Config {

@@ -2,6 +2,7 @@ import 'sqlite3';
 import { DatabaseConfig } from './Config';
 import Knex from 'knex';
 import {Mail, MailInterface} from '@mail-in-memory/model';
+import {DateTime, Duration} from 'luxon';
 
 export default class DbConnector {
 
@@ -50,5 +51,19 @@ export default class DbConnector {
         return this.readyDb
             .then( db => db.select().from<MailInterface>(DbConnector.tableName).limit(count).orderBy('mailTimestamp', 'desc'))
             .then( altmostMails => altmostMails.map( (altmostMail: MailInterface) => Mail.create(altmostMail)));
+    }
+
+    getMailsSince( since: DateTime ): Promise<Mail[]> {
+        return this.readyDb
+            .then( db => db.select()
+                            .from<MailInterface>(DbConnector.tableName)
+                            .where('mailTimestamp', '>=', since.toJSDate())
+                            .orderBy('mailTimestamp', 'desc'))
+            .then( altmostMails => altmostMails.map( (altmostMail: MailInterface) => Mail.create(altmostMail)));
+    }
+    
+    getMailsFor( duration: Duration ): Promise<Mail[]> {
+        const now = DateTime.local();
+        return this.getMailsSince(now.minus(duration));
     }
 }

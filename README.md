@@ -44,7 +44,7 @@ Run:
 
 Request:
 
-`GET /api/emails/latest`
+`GET /api/mails/latest`
 
 Response:
 ```javascript

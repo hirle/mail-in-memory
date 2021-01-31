@@ -14,7 +14,7 @@ export default class GetMailsForRequestHandler {
 
     private handleRequest(req: Request, res: Response, next: NextFunction) {
 
-        const duration = Duration.fromISO(req.params.duration);
+        const duration = Duration.fromISO(req.params.isoduration);
         if( ! duration.isValid ) {
             throw new Error('invalid date:' + duration.invalidExplanation )
         }

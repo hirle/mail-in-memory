@@ -46,7 +46,7 @@ describe('GetLatestMailsRequestHandler', () => {
         underTest( testReq, testRes, mockNextFonction );
 
         const mockDbConnector  = mocked(DbConnector,true);
-        expect(mockDbConnector.mock.instances[0].getLatestMails).toHaveBeenCalledWith(42);
+        expect(mockedObjConnector.getLatestMails).toHaveBeenCalledWith(42);
     });
 
     it('should call next in case of error', done =>{
@@ -92,7 +92,6 @@ describe('GetLatestMailsRequestHandler', () => {
 
         underTest( testReq, testRes, mockNextFonction );
 
-        const mockDbConnector  = mocked(DbConnector);
-        expect(mockDbConnector.mock.instances[0].getLatestMails).toHaveBeenCalledWith(GetLatestMailsRequestHandler.defaultCount);
+        expect(mockedObjConnector.getLatestMails).toHaveBeenCalledWith(GetLatestMailsRequestHandler.defaultCount);
     });
 });

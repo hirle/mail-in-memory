@@ -45,7 +45,6 @@ describe('GetLatestMailsRequestHandler', () => {
 
         underTest( testReq, testRes, mockNextFonction );
 
-        const mockDbConnector  = mocked(DbConnector,true);
         expect(mockedObjConnector.getLatestMails).toHaveBeenCalledWith(42);
     });
 

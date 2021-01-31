@@ -51,6 +51,26 @@ describe('GetMailsSinceRequestHandler', () => {
         expect((mockedObjConnector.getMailsSince as jest.Mock<Promise<Mail[]>, [DateTime]>).mock.calls[0][0]).toEqual(DateTime.fromISO(aDate));
     });
 
+    it('should call next handler if invalid date', () =>{
+
+        const mockedObjConnector = new DbConnector({filename: 'foo.bar'});
+        mockedObjConnector.getMailsSince = jest.fn<Promise<Mail[]>, [DateTime]>();
+        const underTest: (req: Request, res: Response, next: NextFunction) => void = GetMailsSinceRequestHandler.create(mockedObjConnector);
+
+        const aDate = 'not a valid date';
+        const mockNextFunction = jest.fn();
+        const testReq: any = {  params: { isodate: aDate } };
+        const mockStatusFunction = jest.fn();
+        const testRes: any = { status: mockStatusFunction };
+
+        expect( () => underTest( testReq, testRes, mockNextFunction ) ).toThrowError();
+
+        expect(mockedObjConnector.getMailsSince).not.toHaveBeenCalled();
+        expect(mockStatusFunction).not.toHaveBeenCalled();
+        expect(mockNextFunction).not.toHaveBeenCalled();
+    });
+
+
     it('should call next in case of error', done =>{
 
         const mockedObjConnector = new DbConnector({filename: 'foo.bar'});

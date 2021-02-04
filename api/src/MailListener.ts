@@ -28,10 +28,11 @@ export default class MailListener {
             const from = data.from.text;
             const to = data.to.text;
             const subject = data.subject
-            logger.info('Processing from %s to %s, %s', from, to, subject)
+            const date = data.date ? new Date(data.date) : new Date();
+            logger.info('Processing from %s to %s, %s at %s', from, to, subject, date);
 
             this.mailProcessors.forEach( processor => {
-                const newMail = new Mail( from, to, subject, data.text, new Date(data.date));
+                const newMail = new Mail( from, to, subject, data.text, new Date(date));
                 processor.onNewMail(newMail)
                     .catch( error => logger.error(error));
             })     

@@ -6,21 +6,23 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/fetch-mock": "^7.3.3",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "@types/socket.io-client": "^1.4.32"
-
+    "@types/socket.io-client": "^1.4.32",
+    "fetch-mock-jest": "^1.5.1"
   },
   "dependencies": {
+    "@mail-in-memory/model": "1.0.0",
+    "antd": "^4.12.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "socket.io-client": "2.3.0",
     "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4",
-    "@mail-in-memory/model": "1.0.0"
+    "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,6 +49,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3300",
+  "proxy": "http://192.168.0.51:3300",
   "homepage": "."
 }

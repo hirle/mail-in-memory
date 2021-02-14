@@ -1,9 +1,14 @@
 import React from 'react';
 import {Mail} from '@mail-in-memory/model';
 import {SocketMessages} from '@mail-in-memory/model';
-import {GetLastEmails} from './api';
+import {GetEmailsFor, GetLastEmails, GetEmailsSince} from './api';
+import { Radio, RadioChangeEvent } from 'antd';
+import {Duration, DateTime} from 'luxon';
 import SocketIo from './SocketIo';
 import './ListEmails.css';
+import 'antd/dist/antd.css'
+import TableEmails from './TableEmails';
+import TableEmailsMoreRecentThanDuration from './TableEmailsMoreRecentThanDuration';
 
 interface ComponentProps {
     socketIo: SocketIo
@@ -14,95 +19,129 @@ enum ComponentStatus {
     Ready,
     Error
 }
-  
-  interface ComponentState {
-      connected: boolean,
-      status: ComponentStatus,
-      mails: Mail[]
+
+enum Horizon {
+  Last10Minutes,
+  LastHour,
+  Last50,
+  Today,
+  All
+}
+
+interface ComponentState {
+    connected: boolean,
+    status: ComponentStatus,
+    horizon: Horizon,
+    mails: Mail[]
+}
+
+export default class ListEmails extends React.Component<ComponentProps, ComponentState> {
+
+  constructor(props: ComponentProps) {
+      super(props);
+      this.state = {status: ComponentStatus.Loading, horizon: Horizon.Today, connected: false, mails: []};
+  }
+    
+  componentDidMount() {
+    this.refreshMails( this.state.horizon )
+      .then( () => {
+        this.setUpSocketIO();
+      });
   }
 
-  export default class ListEmails
-    extends React.Component<ComponentProps, ComponentState> {
+  setUpSocketIO() {
+      this.props.socketIo.addObserver(SocketMessages.Connect, this.onConnect.bind(this));
+      this.props.socketIo.addObserver(SocketMessages.NewMail, this.onNewMail.bind(this));
+      this.props.socketIo.addObserver(SocketMessages.Disconnect, this.onDisconnect.bind(this));
+  }
 
-    constructor(props: ComponentProps) {
-        super(props);
-        this.state = {status: ComponentStatus.Loading, connected: false, mails: []};
-    }
-      
-    componentDidMount() {
-        GetLastEmails()
-          .then( mails => {        
-            this.setState({
-              status: ComponentStatus.Ready,
-              mails,
-              connected:this.props.socketIo.isConnected()
-            });
+  onNewMail( ) {
+    this.refreshMails(this.state.horizon);
+  }
   
-            this.setUpSocketIO();
-          })
-          .catch( err => {
-            console.log(err);
-            this.setState({status: ComponentStatus.Error, mails: []});
-          });
-    }
-
-    setUpSocketIO() {
-        this.props.socketIo.addObserver(SocketMessages.Connect, this.onConnect.bind(this));
-        this.props.socketIo.addObserver(SocketMessages.NewMail, this.onNewMail.bind(this));
-        this.props.socketIo.addObserver(SocketMessages.Disconnect, this.onDisconnect.bind(this));
-    }
-    
-    onNewMail( ) {
-        GetLastEmails()
-          .then( mails => {        
-            this.setState({
-              status: ComponentStatus.Ready,
-              mails,
-              connected:this.props.socketIo.isConnected()
-            });
-        })
-        .catch( err => {
-            console.log(err);
-            this.setState({status: ComponentStatus.Error, mails: []});
+  refreshMails( horizon: Horizon ): Promise<void>{
+    return this.getMailsByHorizon(horizon)
+      .then( mails => {
+        this.setState({
+          status: ComponentStatus.Ready,
+          mails,
+          connected:this.props.socketIo.isConnected()
         });
-    
+      })
+      .catch( err => {
+          console.log(err);
+          this.setState({status: ComponentStatus.Error, mails: []});
+      });
+  } 
+
+  getMailsByHorizon( horizon: Horizon ): Promise<Mail[]>{
+    switch(horizon) {
+      case Horizon.Last10Minutes: return GetEmailsFor( Duration.fromISO('PT10M'));
+      case Horizon.LastHour: return GetEmailsFor( Duration.fromISO('PT1H'));
+      case Horizon.Last50: return GetLastEmails( 50 );
+      case Horizon.Today: return GetEmailsSince( DateTime.local().startOf('day') );
+      case Horizon.All: return GetLastEmails( Number.MAX_SAFE_INTEGER );
+      default: throw new Error('Illegal state ' + horizon)
     }
-    
-    onConnect() {
-      this.setState({connected: true});
+  }
+
+  onConnect() {
+    this.setState({connected: true});
+  }
+
+  onDisconnect() {
+    this.setState({connected: false});
+  }
+
+  onChangeHorizon = (e: RadioChangeEvent) => {
+    const newHorizon = e.target.value;
+    this.setState({
+      horizon: newHorizon
+    });
+    this.refreshMails(newHorizon);
+  }
+
+  render() {
+      switch(this.state.status)  {
+        case ComponentStatus.Loading: return <div>Loading...</div>;
+        case ComponentStatus.Ready: return this.renderComponentReady();
+        default: return <div className="error">Can't connect</div>;
+      }
+  }
+
+  renderComponentReady() {
+    let tableEmails;
+    switch( this.state.horizon ) {
+        case Horizon.Last10Minutes:
+          tableEmails = <TableEmailsMoreRecentThanDuration
+                          mails={this.state.mails}
+                          duration={Duration.fromObject({minutes:10})}/>
+          break;
+        case Horizon.LastHour:
+          tableEmails = <TableEmailsMoreRecentThanDuration
+                          mails={this.state.mails}
+                          duration={Duration.fromObject({hour:1})}/>
+          break;
+        case Horizon.Last50:
+        case Horizon.All:
+          tableEmails = <TableEmails mails={this.state.mails}/>
+          break;
+        default:
+          tableEmails = <div className="error">Unknown horizon</div>
+          break;
     }
 
-    onDisconnect() {
-      this.setState({connected: false});
-    }
-
-    render() {
-        switch(this.state.status)  {
-          case ComponentStatus.Loading: return <div>Loading...</div>;
-          case ComponentStatus.Ready: return (
-              <table>
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Subject</th>
-                        <th>Body</th>
-                        <th>TimeStamp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  { this.state.mails.map( mail => (<tr key={mail.mailTimestamp.getTime()}>
-                      <td >{mail.fromAddress}</td>
-                      <td >{mail.toAddress}</td>
-                      <td >{mail.subject||''}</td>
-                      <td >{mail.body}</td>
-                      <td >{mail.mailTimestamp.toLocaleString()}</td>
-                      </tr>)
-                ) }
-                </tbody>
-              </table>);
-          default: return <div className="error">Can't connect</div>;
-        }
-    }
+    return (
+      <article className='list-emails'>
+        <Radio.Group onChange={this.onChangeHorizon} value={this.state.horizon}>
+          <Radio value={Horizon.Last10Minutes}>Last 10 Minutes</Radio>
+          <Radio value={Horizon.LastHour}>Last hour</Radio>
+          <Radio value={Horizon.Last50}>Last 50</Radio>
+          <Radio value={Horizon.Today}>Today</Radio>
+          <Radio value={Horizon.All}>All</Radio>
+        </Radio.Group>
+        {tableEmails}
+      </article>);
+  }
 }
     

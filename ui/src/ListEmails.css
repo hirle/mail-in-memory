@@ -3,16 +3,9 @@
     color: red;
 }
 
-thead {
-    background-color: #111;
-    color: #fff;
-}
-
-td {
-    border: 1px solid #111;
+.list-emails {
+    padding: 12px 12px;
     margin: 2px;
-}
-
-table {
-    width: 100%;
+    border: solid thin #111;
+    text-align: left;
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import {Mail} from '@mail-in-memory/model';
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
 interface TableEmailsProps {
     mails: Mail[]
-};
+}
 
 const TableEmails: React.FunctionComponent<TableEmailsProps> = (props: TableEmailsProps) => {
     const columns = [

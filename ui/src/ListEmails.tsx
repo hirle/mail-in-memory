@@ -1,6 +1,5 @@
 import React from 'react';
-import {Mail} from '@mail-in-memory/model';
-import {SocketMessages} from '@mail-in-memory/model';
+import {Mail, SocketMessages} from '@mail-in-memory/model';
 import {GetEmailsFor, GetLastEmails, GetEmailsSince} from './api';
 import { Radio, RadioChangeEvent } from 'antd';
 import {Duration, DateTime} from 'luxon';

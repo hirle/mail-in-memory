@@ -9,15 +9,16 @@ import './ListEmails.css';
 import 'antd/dist/antd.css'
 import TableEmails from './TableEmails';
 import TableEmailsMoreRecentThanDuration from './TableEmailsMoreRecentThanDuration';
+import TableEmailsInTheCurrentPeriod from './TableEmailsInTheCurrentPeriod';
 
 interface ComponentProps {
-    socketIo: SocketIo
+  socketIo: SocketIo
 }
   
 enum ComponentStatus {
-    Loading,
-    Ready,
-    Error
+  Loading,
+  Ready,
+  Error
 }
 
 enum Horizon {
@@ -29,17 +30,17 @@ enum Horizon {
 }
 
 interface ComponentState {
-    connected: boolean,
-    status: ComponentStatus,
-    horizon: Horizon,
-    mails: Mail[]
+  connected: boolean,
+  status: ComponentStatus,
+  horizon: Horizon,
+  mails: Mail[]
 }
 
 export default class ListEmails extends React.Component<ComponentProps, ComponentState> {
 
   constructor(props: ComponentProps) {
       super(props);
-      this.state = {status: ComponentStatus.Loading, horizon: Horizon.Today, connected: false, mails: []};
+      this.state = {status: ComponentStatus.Loading, horizon: Horizon.LastHour, connected: false, mails: []};
   }
     
   componentDidMount() {
@@ -50,9 +51,9 @@ export default class ListEmails extends React.Component<ComponentProps, Componen
   }
 
   setUpSocketIO() {
-      this.props.socketIo.addObserver(SocketMessages.Connect, this.onConnect.bind(this));
-      this.props.socketIo.addObserver(SocketMessages.NewMail, this.onNewMail.bind(this));
-      this.props.socketIo.addObserver(SocketMessages.Disconnect, this.onDisconnect.bind(this));
+    this.props.socketIo.addObserver(SocketMessages.Connect, this.onConnect.bind(this));
+    this.props.socketIo.addObserver(SocketMessages.NewMail, this.onNewMail.bind(this));
+    this.props.socketIo.addObserver(SocketMessages.Disconnect, this.onDisconnect.bind(this));
   }
 
   onNewMail( ) {
@@ -125,6 +126,11 @@ export default class ListEmails extends React.Component<ComponentProps, Componen
         case Horizon.Last50:
         case Horizon.All:
           tableEmails = <TableEmails mails={this.state.mails}/>
+          break;
+        case Horizon.Today:
+          tableEmails = <TableEmailsInTheCurrentPeriod
+                          mails={this.state.mails}
+                          duration={Duration.fromObject({day:1})}/>
           break;
         default:
           tableEmails = <div className="error">Unknown horizon</div>

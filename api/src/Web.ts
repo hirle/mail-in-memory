@@ -1,5 +1,5 @@
 import express, { RequestHandler } from 'express';
-import bodyParser from 'body-parser';
+import * as bodyParser from 'body-parser';
 import { Server } from 'http';
 import socketIO from 'socket.io';
 import Config from './Config';

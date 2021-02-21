@@ -38,11 +38,11 @@ describe('api', () => {
     it('should call /api/mails/since', () => {
 
         fetchMock.once(
-            {url:'/api/mails/since/1984-01-24T00:00:00.000+01:00', method: 'GET'},
+            {url:'/api/mails/since/1984-01-24T00:00:00.000Z', method: 'GET'},
             [loveMail]
             );
 
-        return api.GetEmailsSince(DateTime.fromObject({year:1984,month:1,day:24})).then(mails => {
+        return api.GetEmailsSince(DateTime.fromObject({year:1984,month:1,day:24,zone:'utc'})).then(mails => {
             expect(mails).toMatchObject([loveMail]);
             expectCommonOptions(fetchMock.lastOptions());
         });

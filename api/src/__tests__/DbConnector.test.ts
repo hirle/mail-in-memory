@@ -5,7 +5,7 @@ import { DateTime, Duration } from 'luxon';
 
 describe('DbConnector', () => {
 
-    const now = DateTime.local();
+    const now = DateTime.utc();
     const mailLastYear = new Mail('expeditor@domain.org', 'destinator@localhost', 'very old', 'should not be selected', now.minus( { year: 1 } ).toJSDate() );
     const recentMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'very recent', 'should be selected', now.toJSDate() );
     const anotherRecentMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'recent', 'should be selected', now.minus({ minute: 1 }).toJSDate() );

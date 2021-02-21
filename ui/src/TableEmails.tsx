@@ -41,6 +41,8 @@ const TableEmails: React.FunctionComponent<TableEmailsProps> = (props: TableEmai
         dataSource={props.mails}
         columns={columns}
         pagination ={{hideOnSinglePage:true}}
+        // TODO put a better key here
+        rowKey={ mail => mail.mailTimestamp.getTime() }
         />;
 }
 

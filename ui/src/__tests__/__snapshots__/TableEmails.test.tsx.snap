@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link changes the class when hovered 1`] = `
+<div
+  className="ant-table-wrapper"
+>
+  <div
+    className="ant-spin-nested-loading"
+  >
+    <div
+      className="ant-spin-container"
+    >
+      <div
+        className="ant-table"
+      >
+        <div
+          className="ant-table-container"
+        >
+          <div
+            className="ant-table-content"
+            onScroll={[Function]}
+            style={Object {}}
+          >
+            <table
+              style={
+                Object {
+                  "tableLayout": "auto",
+                }
+              }
+            >
+              <colgroup />
+              <thead
+                className="ant-table-thead"
+              >
+                <tr>
+                  <th
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    From
+                  </th>
+                  <th
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    To
+                  </th>
+                  <th
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    Subject
+                  </th>
+                  <th
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    Body
+                  </th>
+                  <th
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    TimeStamp
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                className="ant-table-tbody"
+              >
+                <tr
+                  className="ant-table-row ant-table-row-level-0"
+                  data-row-key={1613931180000}
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    foo@email.org
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    jest@test.mail-in-memory
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    Cool
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    With jest, unit testing is so cool
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    2021-2-21 19:13:00
+                  </td>
+                </tr>
+                <tr
+                  className="ant-table-row ant-table-row-level-0"
+                  data-row-key={1613931190000}
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    bar@email.org
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    jest@test.mail-in-memory
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    Great
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    Jest is really great
+                  </td>
+                  <td
+                    className="ant-table-cell"
+                    colSpan={null}
+                    rowSpan={null}
+                    style={Object {}}
+                  >
+                    2021-2-21 19:13:10
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

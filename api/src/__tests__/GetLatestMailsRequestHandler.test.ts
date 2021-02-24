@@ -17,6 +17,7 @@ describe('GetLatestMailsRequestHandler', () => {
 
         const loveMail = [
             new Mail(
+                '123-456_678',
                 'romeo@shakespeare.org',
                 'juliet@shakespeare.org',
                 'Love letter',

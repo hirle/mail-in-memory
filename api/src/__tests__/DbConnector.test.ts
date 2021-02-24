@@ -6,9 +6,9 @@ import { DateTime, Duration } from 'luxon';
 describe('DbConnector', () => {
 
     const now = DateTime.utc();
-    const mailLastYear = new Mail('expeditor@domain.org', 'destinator@localhost', 'very old', 'should not be selected', now.minus( { year: 1 } ).toJSDate() );
-    const recentMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'very recent', 'should be selected', now.toJSDate() );
-    const anotherRecentMail = new Mail('expeditor@domain.org', 'destinator@localhost', 'recent', 'should be selected', now.minus({ minute: 1 }).toJSDate() );
+    const mailLastYear = new Mail('very-old-mail', 'expeditor@domain.org', 'destinator@localhost', 'very old', 'should not be selected', now.minus( { year: 1 } ).toJSDate() );
+    const recentMail = new Mail('very-recent-mail', 'expeditor@domain.org', 'destinator@localhost', 'very recent', 'should be selected', now.toJSDate() );
+    const anotherRecentMail = new Mail('recent-mail', 'expeditor@domain.org', 'destinator@localhost', 'recent', 'should be selected', now.minus({ minute: 1 }).toJSDate() );
     const oneDay: Duration = Duration.fromObject({ day: 1 });
 
     it('should connect the db in memory, create 1 record and fetch it', () => {

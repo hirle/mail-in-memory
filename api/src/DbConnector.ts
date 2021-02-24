@@ -33,6 +33,7 @@ export default class DbConnector {
             table.increments('id');
             table.string('fromAddress', 254).notNullable();
             table.string('toAddress', 254).notNullable();
+            table.string('messageId', 36).notNullable();
             table.string('subject', 78);
             table.text('body').notNullable();
             table.timestamp('mailTimestamp', { useTz: true }).notNullable();

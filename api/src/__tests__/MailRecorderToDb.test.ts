@@ -10,6 +10,7 @@ describe('MailRecorderToDb', () => {
         const dbConnector: DbConnector = new DbConnector({filename: 'this is a mock'});
 
         const mail = Mail.create({
+            messageId: '123-456-789',
             fromAddress: 'expeditor@domain.org',
             toAddress:'destinator@domain.org',
              body: 'building',

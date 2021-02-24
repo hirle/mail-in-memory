@@ -7,6 +7,7 @@ import TableEmails from '../TableEmails';
 test('Link changes the class when hovered', () => {
     const testMails: Mail[] = [
         Mail.create( {
+            messageId: '123-234-456-789',
             fromAddress: 'foo@email.org',
             toAddress: 'jest@test.mail-in-memory',
             subject: 'Cool',
@@ -14,6 +15,7 @@ test('Link changes the class when hovered', () => {
             mailTimestamp: Date.parse('2021-02-21T18:13:00Z')
         }),
         Mail.create( {
+            messageId: '234-456-789-012',
             fromAddress: 'bar@email.org',
             toAddress: 'jest@test.mail-in-memory',
             subject: 'Great',

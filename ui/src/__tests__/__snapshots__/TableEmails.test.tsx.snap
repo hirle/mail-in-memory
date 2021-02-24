@@ -80,7 +80,7 @@ exports[`Link changes the class when hovered 1`] = `
               >
                 <tr
                   className="ant-table-row ant-table-row-level-0"
-                  data-row-key={1613931180000}
+                  data-row-key="123-234-456-789"
                   onClick={[Function]}
                   style={Object {}}
                 >
@@ -127,7 +127,7 @@ exports[`Link changes the class when hovered 1`] = `
                 </tr>
                 <tr
                   className="ant-table-row ant-table-row-level-0"
-                  data-row-key={1613931190000}
+                  data-row-key="234-456-789-012"
                   onClick={[Function]}
                   style={Object {}}
                 >

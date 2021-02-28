@@ -11,6 +11,7 @@ import Web from "./Web";
 import GetLatestMailsRequestHandler from "./GetLatestMailsRequestHandler";
 import GetMailsSinceRequestHandler from "./GetMailsSinceRequestHandler";
 import GetMailsForRequestHandler from "./GetMailsForRequestHandler";
+import DeleteMailsOlderThanRequestHandler from './DeleteMailsOlderThanRequestHandler';
 
 export function main(argv: string[]): number {
     
@@ -42,15 +43,17 @@ export function main(argv: string[]): number {
 }
 
 function setupApiRoutes( web: Web, dbConnector: DbConnector ) {
-  const latestMailsRequestHandle = GetLatestMailsRequestHandler.create(dbConnector);
-  web.recordGetRoute('/api/mails/latest', latestMailsRequestHandle);
+  const getLatestMailsRequestHandler = GetLatestMailsRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/latest', getLatestMailsRequestHandler);
 
-  const sinceMailsRequestHandle = GetMailsSinceRequestHandler.create(dbConnector);
-  web.recordGetRoute('/api/mails/since/:isodate', sinceMailsRequestHandle);
+  const getMailsSinceMailsRequestHandler = GetMailsSinceRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/since/:isodate', getMailsSinceMailsRequestHandler);
 
-  const forMailsRequestHandle = GetMailsForRequestHandler.create(dbConnector);
-  web.recordGetRoute('/api/mails/for/:isoduration', forMailsRequestHandle);
+  const getMailForRequestHandler = GetMailsForRequestHandler.create(dbConnector);
+  web.recordGetRoute('/api/mails/for/:isoduration', getMailForRequestHandler);
 
+  const deleteMailsOlderThanRequestHandler = DeleteMailsOlderThanRequestHandler.create(dbConnector);
+  web.recordDeleteRoute('/api/mails/older/:isoduration', deleteMailsOlderThanRequestHandler);
 }
 
 function processArgv(argv: string[]): Config {

@@ -64,7 +64,17 @@ export default class DbConnector {
     }
     
     getMailsFor( duration: Duration ): Promise<Mail[]> {
-        const now = DateTime.local();
+        const now = DateTime.now();
         return this.getMailsSince(now.minus(duration));
+    }
+
+    deleteMailsOlderThan(duration: Duration): Promise<number> {
+        const before = DateTime.now().minus(duration);
+        return this.readyDb
+            .then( db => db
+                        .from(DbConnector.tableName)
+                        .where('mailTimestamp', '<', before.toJSDate())
+                        .delete()
+            );
     }
 }

@@ -42,6 +42,10 @@ export default class Web {
         this.app.get(path, requestHandler);
     }
 
+    recordDeleteRoute(path: string, requestHandler: RequestHandler ): void {
+        this.app.delete(path, requestHandler);
+    }
+
     emitNewMail(newMail: Mail) {
         this.io.emit(SocketMessages.NewMail, newMail);
     }

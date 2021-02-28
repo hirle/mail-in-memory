@@ -1,7 +1,6 @@
 import Web from '../Web';
 import MailMessageEmitter from '../MailMessageEmitter';
 import {Mail} from '@mail-in-memory/model';
-import { mocked } from 'ts-jest/utils';
 
 jest.mock('../Web');
 

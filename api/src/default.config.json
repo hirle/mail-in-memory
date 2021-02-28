@@ -1,0 +1,7 @@
+{
+    "http-port" : 3300,
+    "smtp-port" : 3325,
+    "db" : {
+        "filename": ":memory:"
+    }
+  }

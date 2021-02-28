@@ -1,0 +1,16 @@
+.elephant {
+    height: 48px;
+    margin-right:12px;
+}
+
+.logo-name {
+    flex: 1;
+    
+    font-size: 36px;
+    color: #111;
+
+    padding: 12px 12px;
+    margin: 2px;
+    border: solid thin #111;
+    text-align: left;
+}

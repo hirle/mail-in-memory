@@ -1,0 +1,12 @@
+{
+    "http-port" : 3300,
+    "smtp-port" : 3325,
+    "db" : {
+        "filename": "path/to/file.db"
+    },
+    "logs": {
+        "dir": "logs.will.be.put.there",
+        "retention": 3,
+        "level": "info"
+    }
+}

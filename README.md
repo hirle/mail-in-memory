@@ -1,4 +1,9 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hirle_mail-in-memory&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=hirle_mail-in-memory&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=hirle_mail-in-memory&metric=security_rating)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hirle_mail-in-memory&metric=alert_status)](https://sonarcloud.io/dashboard?id=hirle_mail-in-memory)
+
 
 # Mail In Memory
 
@@ -37,11 +42,11 @@ Run:
 
 ## API
 
-### Get latest emails
+### Get latest mails
 
 Request:
 
-`GET /api/emails/latest`
+`GET /api/mails/latest`
 
 Response:
 ```javascript
@@ -51,8 +56,41 @@ Response:
     "toAddress": "iam@destinator.org",
     "subject": "What a subject",
     "body": "Guess what, this is the body",
-    "mailTimestamp": "20201225T00:00:00Z"
+    "mailTimestamp": "2020-12-25T00:00:00Z"
   }
 ]
 ```
 
+### Get mails since
+
+Request:
+
+`GET /api/mails/since/:isodate`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) for date format, example: `2021-02-28T17:48:29Z`.
+
+Response:
+(similar to previous)
+
+### Get mails for
+
+Request:
+
+`GET /api/mails/for/:isoduration`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for duration format, example: `P1M`.
+
+Response:
+(similar to previous)
+
+
+### Delete mails older than
+
+Request:
+
+`DELETE /api/mails/older/:isoduration`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for duration format, example: `P1M`.
+
+Response:
+Status code 201 or 204 depending some rows were deleted. 

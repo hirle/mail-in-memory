@@ -1,0 +1,11 @@
+.error {
+    font-size: 36px;
+    color: red;
+}
+
+.list-emails {
+    padding: 12px 12px;
+    margin: 2px;
+    border: solid thin #111;
+    text-align: left;
+}

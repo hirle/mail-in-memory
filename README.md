@@ -40,7 +40,7 @@ Run:
 
 ## API
 
-### Get latest emails
+### Get latest mails
 
 Request:
 
@@ -54,8 +54,41 @@ Response:
     "toAddress": "iam@destinator.org",
     "subject": "What a subject",
     "body": "Guess what, this is the body",
-    "mailTimestamp": "20201225T00:00:00Z"
+    "mailTimestamp": "2020-12-25T00:00:00Z"
   }
 ]
 ```
 
+### Get mails since
+
+Request:
+
+`GET /api/mails/since/:isodate`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) for date format, example: `2021-02-28T17:48:29Z`.
+
+Response:
+(similar to previous)
+
+### Get mails for
+
+Request:
+
+`GET /api/mails/for/:isoduration`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for duration format, example: `P1M`.
+
+Response:
+(similar to previous)
+
+
+### Delete mails older than
+
+Request:
+
+`DELETE /api/mails/older/:isoduration`
+
+See [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for duration format, example: `P1M`.
+
+Response:
+Status code 201 or 204 depending some rows were deleted. 

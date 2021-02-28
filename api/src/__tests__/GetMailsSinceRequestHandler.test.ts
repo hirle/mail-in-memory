@@ -1,11 +1,9 @@
-import { mocked } from 'ts-jest/utils';
 import { Request, Response} from 'express-serve-static-core';
 import { NextFunction } from 'express';
 import DbConnector from '../DbConnector';
 import GetMailsSinceRequestHandler from '../GetMailsSinceRequestHandler';
 import { Mail } from '@mail-in-memory/model';
 import { DateTime } from 'luxon';
-import { MockedFunction } from 'ts-jest/dist/utils/testing';
 
 jest.mock('../DbConnector');
 

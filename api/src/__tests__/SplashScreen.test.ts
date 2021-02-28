@@ -1,4 +1,3 @@
-import Config from '../Config';
 import SplashScreen from '../SplashScreen';
 
 describe('SplashScreen', () => {

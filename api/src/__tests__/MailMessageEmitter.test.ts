@@ -29,7 +29,7 @@ describe('MailMessageEmitter', () => {
         const underTest = new MailMessageEmitter(mockedWeb);
         return underTest.onNewMail(mail)
             .then( () => {
-                expect( mockedWeb.emitNewMail).toBeCalled();
+                expect( mockedWeb.emitNewMail).toBeCalledWith(mail);
             });
     });
 });

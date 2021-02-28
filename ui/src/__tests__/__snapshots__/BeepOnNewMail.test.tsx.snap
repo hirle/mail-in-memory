@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BeepOnNewMail should update date on new mail 1`] = `
+<div
+  className="beep-on-new-mail"
+>
+  <audio
+    src="beep.mp3"
+  />
+  <label>
+    <input
+      checked={true}
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span>
+      Beep on new Mail
+    </span>
+  </label>
+</div>
+`;
+
+exports[`BeepOnNewMail should update date on new mail 2`] = `
+<div
+  className="beep-on-new-mail"
+>
+  <audio
+    src="beep.mp3"
+  />
+  <label>
+    <input
+      checked={true}
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span>
+      Beep on new Mail
+    </span>
+  </label>
+  <div>
+    Last email received at: 
+    2021-2-28 10:33:30
+  </div>
+</div>
+`;

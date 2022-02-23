@@ -1,0 +1,14 @@
+[Unit]
+Description=mail-in-memory
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node index.js --config /opt/mail-in-memory/config.json
+WorkingDirectory=/opt/mail-in-memory/package
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=mail-in-memory
+
+[Install]
+WantedBy=multi-user.target

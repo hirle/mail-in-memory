@@ -1,0 +1,99 @@
+---
+- name: Install mail-in-memory
+  hosts: passage
+  become: yes
+  roles:
+    - node16
+
+  tasks:
+    - name: create mail-in-memory group
+      group:
+        name: mail-in-memory
+        state: present
+
+    - name: create mail-in-memory user
+      user:
+        name: mail-in-memory
+        groups: mail-in-memory
+        shell: /sbin/nologin
+        append: yes
+        state: present
+        create_home: no
+
+    - name: Copy systemd service file to server
+      copy:
+        src: mail-in-memory.service
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+      notify:
+        - Restart mail-in-memory
+    
+
+    - name: create directory for mail-in-memory
+      ansible.builtin.file:
+        path: /opt/mail-in-memory
+        owner: mail-in-memory
+        group: mail-in-memory
+        state: directory
+        mode: '0755'
+
+    - name: query latest release from GitHub
+      ansible.builtin.uri:                                                               
+        url: https://api.github.com/repos/hirle/mail-in-memory/releases/latest
+        return_content: true                                             
+      register: json_reponse          
+
+    - name: download release from GitHub    
+      get_url:                                                           
+        url: "{{ json_reponse.json.assets[0].browser_download_url }}"                       
+        dest: /tmp/mail-in-memory-latest.tar.gz       
+
+    - name: unpack release
+      unarchive:                       
+        remote_src: yes                                    
+        src: /tmp/mail-in-memory-latest.tar.gz
+        dest: /opt/mail-in-memory
+        owner: mail-in-memory
+        group: mail-in-memory
+
+    - name: install model
+      npm:
+        path: /opt/mail-in-memory/package
+        name: ./mail-in-memory-model.tgz
+
+    - name: install node dependencies
+      npm:
+        path: /opt/mail-in-memory/package
+
+    - name: declare service mail-in-memory
+      copy:
+        src: mail-in-memory.service
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+      notify:
+        - Restart mail-in-memory
+
+    - name: Enable service mail-in-memory
+      ansible.builtin.service:
+        name: mail-in-memory
+        enabled: yes
+      notify:
+        - Restart mail-in-memory
+
+    - name: Copy config file  
+      copy:
+        src: config.json
+        dest: /opt/mail-in-memory
+        owner: mail-in-memory
+        group: mail-in-memory
+        mode: '0644'
+      notify:
+        - Restart mail-in-memory
+
+  handlers:
+    - name: Restart mail-in-memory
+      service:
+        name: mail-in-memory
+        state: restarted

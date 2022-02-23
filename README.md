@@ -24,6 +24,13 @@ NodeJS 12 is required, at the time of writing LTS is 12.20.0. You may want to ad
 
 `npx mail-in-memory`
 
+### For a permanent use
+
+A ansible playbook is available, see the directory `ansible`. This is will download the latest release from GitHub and make it run as a service. To proceed:
+- adapt the `inventory/hosts` file
+- adapt the `installs/fils/config.json` file
+- run `ansible-playbook installs/mail-in-memory.yml`
+
 ## More options, use a config file
 
 Copy the file `config.template.json` as `config.json` and make it yours. This looks like:
